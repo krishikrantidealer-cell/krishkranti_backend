@@ -26,4 +26,3 @@ module.exports.healthcheck = async (req, res) => {
     })
 }
 
-// This is the backend for the product services and all the product api's are listed in this pannel for the future refrenses since moving forward in this project we will need this project for the proper initalization of the course we are dividing that to the direction of the project completion and fastracking the process.
