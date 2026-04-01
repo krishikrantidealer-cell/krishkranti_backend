@@ -21,7 +21,7 @@ const productController = {
       const product = await Product.findById(req.params.id)
         .populate('category', 'name description')
         .populate('seller', 'firstName lastName shopName phoneNumber email');
-      
+
       if (!product) {
         return res.status(404).json({ success: false, message: 'Product not found' });
       }
@@ -39,10 +39,35 @@ const productController = {
       const products = await Product.find({ category: categoryId })
         .populate('category', 'name')
         .populate('seller', 'firstName lastName shopName');
-      
+
       res.status(200).json({ success: true, count: products.length, products });
     } catch (error) {
-      console.error('Get Products By Category error:', error);
+      console.error('Get Products By Category error:', error.message);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  },
+
+  // GET /products/search?q=...
+  searchProducts: async (req, res) => {
+    try {
+      const { q } = req.query;
+      if (!q) {
+        return res.status(400).json({ success: false, message: 'Search query is required' });
+      }
+
+      // Case-insensitive regex search on name and description
+      const searchRegex = new RegExp(q, 'i');
+      const products = await Product.find({
+        $or: [
+          { name: searchRegex },
+          { description: searchRegex }
+        ]
+      }).populate('category', 'name')
+        .populate('seller', 'firstName lastName shopName');
+
+      res.status(200).json({ success: true, count: products.length, products });
+    } catch (error) {
+      console.error('Search Products error:', error);
       res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
   }

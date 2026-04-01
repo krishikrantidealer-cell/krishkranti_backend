@@ -7,10 +7,12 @@ const { protect } = require('../middleware/auth.middleware');
 router.use(protect);
 
 const couponController = require('../controllers/coupon.controller');
+const { createSearchIndex } = require('../models/User.model');
 
 // GET /cart
 router.get('/', cartController.getCart);
 
+router.get("/health", cartController.healthcheck)
 // POST /cart/add
 router.post('/add', cartController.addToCart);
 

@@ -55,7 +55,7 @@ const authController = {
         firstName, 
         lastName, 
         email, 
-        shopName, 
+        role, 
         firebaseUid,
         addressType,
         villageArea,
@@ -63,8 +63,8 @@ const authController = {
         pincode
       } = req.body;
 
-      if (!phoneNumber || !firstName || !lastName) {
-        return res.status(400).json({ success: false, message: 'Phone number, First Name and Last Name are required' });
+      if (!phoneNumber || !firstName || !lastName || !role) {
+        return res.status(400).json({ success: false, message: 'Phone number, First Name, Last Name, and Role are required' });
       }
 
       // Ensure user doesn't already exist
@@ -79,7 +79,7 @@ const authController = {
         firstName,
         lastName,
         email,
-        shopName,
+        role,
         firebaseUid,
         address: {
           addressType: addressType || 'home',
@@ -87,7 +87,8 @@ const authController = {
           cityTehsil,
           pincode
         },
-        isVerified: true
+        isVerified: true,
+        kycStatus: 'pending'
       });
 
       await user.save();
@@ -135,6 +136,32 @@ const authController = {
       res.status(200).json({ success: true, message: 'FCM Token updated successfully' });
     } catch (error) {
       console.error('Update FCM Token Error:', error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  },
+
+  // PUT /auth/update-profile
+  updateProfile: async (req, res) => {
+    try {
+      const { firstName, lastName, email, addressType, villageArea, cityTehsil, pincode } = req.body;
+      const user = req.user;
+
+      if (firstName) user.firstName = firstName;
+      if (lastName) user.lastName = lastName;
+      if (email) user.email = email;
+      
+      if (addressType || villageArea || cityTehsil || pincode) {
+        if (!user.address) user.address = {};
+        if (addressType) user.address.addressType = addressType;
+        if (villageArea) user.address.villageArea = villageArea;
+        if (cityTehsil) user.address.cityTehsil = cityTehsil;
+        if (pincode) user.address.pincode = pincode;
+      }
+
+      await user.save();
+      res.status(200).json({ success: true, message: 'Profile updated successfully', user });
+    } catch (error) {
+      console.error('Update Profile error:', error);
       res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
   }

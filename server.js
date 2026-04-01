@@ -24,6 +24,9 @@ const orderRoutes = require('./routes/order.routes');
 const paymentRoutes = require('./routes/payment.routes');
 const cartRoutes = require('./routes/cart.routes');
 const couponRoutes = require('./routes/coupon.routes');
+const kycRoutes = require('./routes/kyc.routes');
+const categoryRoutes = require('./routes/category.routes');
+const favoriteRoutes = require('./routes/favorite.routes');
 
 app.use('/api/test', testRoutes);
 app.use('/auth', authRoutes);
@@ -32,6 +35,14 @@ app.use('/orders', orderRoutes);
 app.use('/payments', paymentRoutes);
 app.use('/cart', cartRoutes);
 app.use('/coupons', couponRoutes);
+app.use('/kyc', kycRoutes);
+app.use('/categories', categoryRoutes); // Re-adding categories if needed
+app.use('/favorites', favoriteRoutes);
+
+
+// Static for uploads
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Root route
 app.get('/', (req, res) => {

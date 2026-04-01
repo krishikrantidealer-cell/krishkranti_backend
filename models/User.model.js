@@ -21,10 +21,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
     lowercase: true,
-  },
-  shopName: {
-    type: String,
-    trim: true,
+    unique: true,
+    sparse: true,
   },
   address: {
     addressType: {
@@ -48,6 +46,40 @@ const userSchema = new mongoose.Schema({
   isVerified: {
     type: Boolean,
     default: false,
+  },
+  role: {
+    type: String,
+    enum: ['retailer', 'distributor', 'farmer', 'admin'],
+    required: true,
+    default: 'farmer'
+  },
+  kycDetails: {
+    shopName: {
+      type: String,
+      trim: true,
+    },
+    licenseImage: {
+      type: String, // URL/Path to image
+    },
+    gstNumber: {
+      type: String,
+      trim: true,
+    },
+    gstImage: {
+      type: String, // URL/Path to image
+    },
+    aadharCardImage: {
+      type: String, // URL/Path to image
+    }
+  },
+  kycStatus: {
+    type: String,
+    enum: ['pending', 'submitted', 'approved', 'rejected'],
+    default: 'pending'
+  },
+  isTest: {
+    type: Boolean,
+    default: false
   },
   firebaseUid: {
     type: String,

@@ -135,6 +135,11 @@ const cartController = {
       console.error('Remove From Cart error:', error);
       res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
+  },
+  
+  // GET /cart/health
+  healthcheck: async (req, res) => {
+    res.status(200).json({ success: true, message: 'Cart service is healthy' });
   }
 };
 

@@ -19,4 +19,7 @@ router.get('/me', protect, authController.getProfile);
 // POST /auth/fcm-token (Protected)
 router.post('/fcm-token', protect, authController.updateFcmToken);
 
+// PUT /auth/update-profile (Protected)
+router.put('/update-profile', protect, authController.updateProfile);
+
 module.exports = router;
