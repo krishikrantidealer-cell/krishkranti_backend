@@ -27,6 +27,7 @@ const couponRoutes = require('./routes/coupon.routes');
 const kycRoutes = require('./routes/kyc.routes');
 const categoryRoutes = require('./routes/category.routes');
 const favoriteRoutes = require('./routes/favorite.routes');
+const reviewRoutes = require('./routes/review.routes');
 
 app.use('/api/test', testRoutes);
 app.use('/auth', authRoutes);
@@ -36,8 +37,9 @@ app.use('/payments', paymentRoutes);
 app.use('/cart', cartRoutes);
 app.use('/coupons', couponRoutes);
 app.use('/kyc', kycRoutes);
-app.use('/categories', categoryRoutes); // Re-adding categories if needed
+app.use('/categories', categoryRoutes);
 app.use('/favorites', favoriteRoutes);
+app.use('/reviews', reviewRoutes);
 
 
 // Static for uploads
